@@ -1,0 +1,39 @@
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: ${configserver.git.uri:C:\work\playground\VirtaulMarch2021ConfigRepo}
+          username: ${configserver.git.username}
+          password: ${configserver.git.password}
+    bus:
+      enabled: true
+      destination: ${configserver.bus.exchange:busConfigExchange}
+  rabbitmq:
+    host: ${configserver.rabbitmq.host:192.168.99.100} 
+    port: ${configserver.rabbitmq.port:5672}
+
+  application:
+    name: configserver     
+server:
+  port: ${configserver.server.port:8888}
+
+eureka:
+  instance:
+    instanceId: ${spring.application.name}:${random.int}
+    leaseRenewalIntervalInSeconds: 1
+    leaseExpirationDurationInSeconds: 5
+    preferIpAddress: true
+    metadata-map:
+      zone: A
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    prefer-same-zone-eureka: true
+    serviceUrl:
+      defaultZone: ${configserver.eureka.url:http://eureka:8761/eureka}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
