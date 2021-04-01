@@ -1,0 +1,40 @@
+--- 
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  labels: 
+    app: cloudapigateway
+    version: v1
+  name: cloudapigateway
+spec: 
+  strategy: # Default, so usually not specified
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1  # specifies the maximum number of Pods that can be created over the desired number of Pods
+      maxUnavailable: 25% #specifies the maximum number of Pods that can be unavailable during the update process
+  replicas: 1
+  selector: 
+    matchLabels: 
+      app: cloudapigateway
+      version: v1
+  template: 
+    metadata: 
+      labels: 
+        app: cloudapigateway
+        version: v1
+
+    spec: 
+
+      containers: 
+        - 
+          image: "kapilshekharraina/apigatewayasean01:latest"
+          imagePullPolicy: Always
+          name: cloudapigateway
+          ports: 
+#          - containerPort: 8081   
+          - name: httpport
+            containerPort: 9000
+            hostPort: 9000
+          env:
+            - name: apigateway.config.url
+              value: http://configserver:8888/                  

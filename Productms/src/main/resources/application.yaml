@@ -1,0 +1,60 @@
+server:
+  port: 0
+  
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+       
+        
+spring:
+  application:
+    name: productms
+  profiles:
+    active: ${productms.profiles.active:local}    
+  config:
+    import: ${productms.config.url:configserver:http://localhost:8888}
+  cloud:
+    bus:
+      enabled: true
+      destination: ${discountms.config.bus.exchange:busConfigExchange}   
+  h2:
+    console:
+      enabled: ${productms.console.enabled:true}
+      path: ${productms.console.path}
+      settings:
+        web-allow-others: true
+  datasource:
+    url: ${productms.datasource.url}
+    username: ${productms.datasource.username}
+    password: ${productms.datasource.password}
+    driver-class-name: ${productms.datasource.driver}
+  jpa:
+    show-sql: true   
+    
+  sleuth:
+    trace-id128: true
+    sampler:
+      probability: 1.0
+  zipkin:
+    enabled: true
+    base-url: ${productms.zipkin.url:http://192.168.99.103:9411/}
+        
+eureka:
+  instance:
+    instanceId: ${spring.application.name}:${random.int}
+    leaseRenewalIntervalInSeconds: 2
+    leaseExpirationDurationInSeconds: 5
+    preferIpAddress: true
+    metadata-map:
+      zone: A
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    prefer-same-zone-eureka: true
+    serviceUrl:
+      defaultZone: ${productms.eureka.url:http://localhost:8761/eureka} 
+
+
+greetText: Fallback Hola From Local File          

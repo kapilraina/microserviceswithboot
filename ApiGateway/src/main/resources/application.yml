@@ -1,0 +1,46 @@
+spring:
+  sleuth:
+    trace-id128: true
+    sampler:
+      probability: 1.0
+  zipkin:
+    enabled: true
+    base-url: ${apigateway.zipkin.url:http://zipkin:9411/}
+  cloud:
+    bus:
+      enabled: true
+      destination: ${apigateway.bus.exchange:busConfigExchange}
+  rabbitmq:
+    host: ${apigateway.rabbitmq.host:192.168.99.100} 
+    port: ${apigateway.rabbitmq.port:5672}
+
+
+  application:
+    name: apigateway
+  profiles:
+    active: ${apigateway.profiles.active:local}      config:    import: ${apigateway.config.url:configserver:http://localhost:8888}
+
+
+
+eureka:
+  instance:
+    instanceId: ${spring.application.name}:${random.int}
+    leaseRenewalIntervalInSeconds: 2
+    leaseExpirationDurationInSeconds: 5
+    preferIpAddress: true
+    metadata-map:
+      zone: A
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    prefer-same-zone-eureka: true
+    serviceUrl:
+      defaultZone: ${apigateway.eureka.url:http://localhost:8761/eureka}
+       
+server:
+  port: ${apigateway.server.port:80} 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  

@@ -1,0 +1,116 @@
+spring:
+  sleuth:
+    trace-id128: true
+    sampler:
+      probability: 1.0
+  zipkin:
+    enabled: true
+    base-url: ${discountms.zipkin.url:http://192.168.99.103:9411/}
+  cloud:
+    bus:
+      enabled: true
+      destination: ${discountms.config.bus.exchange:busConfigExchange}
+      trace: 
+       enabled: ${discountms.bus.trace:true} 
+
+    stream:      
+      bindings: 
+        webaudit-out:
+         binder: rabbit-binder
+         destination: ${discountms.binding.auditout.destination:ex.webaudit}  #Exchange
+         group: ${discountms.binding.auditout.group:q.audit} # queue
+
+        discountstream-out:
+         binder: kafka-binder
+         destination: ${discountms.binding.discountstreamout.destination:TX-DISCOUNTSTREAM} #Topic
+         group: ${discountms.binding.discountstreamout.group:APP_DISCOUNTMS}  
+         content-type: ${discountms.binding.discountstreamout.contenttype:application/json}
+                  
+      rabbit: 
+        bindings:
+          webaudit-out:
+           producer:
+            bindQueue: ${discountms.binding.auditout.bindqueue:true}
+            #routingKeyExpression: ${discountms.binding.auditout.routingKeyExpression:rkwebauditshim1}
+            routingKeyExpression: 'rkwebauditshim1'
+            declareExchange: ${discountms.binding.auditout.declareExchange:true}
+            exchangeType: direct
+      kafka:
+       bindings:
+        discountstream-out:
+         producer:
+          synchronous: false
+
+      binders:      
+        rabbit-binder:
+         type: rabbitbinder
+         environment:
+            spring:
+              rabbitmq:
+               host: ${discountms.binder.rabbitmq.host:rabbitmq-master} 
+               port: ${discountms.binder.rabbitmq.port:5672}
+               
+        kafka-binder:    
+         type: kafkabinder
+         environment:
+          spring:
+            cloud:
+             stream:
+              kafka:
+               binder:
+                 brokers: ${discountms.binder.kafka.brokers:kafka1:9094,kafka2:9095} 
+                 defaultBrokerPort: ${discountms.binder.kafka.defaultbroker:9094} 
+                 autoCreateTopics: ${discountms.binder.kafka.autocreatetopics:true} 
+                 autoAddPartitions: ${discountms.binder.kafka.autoaddpartitions:true} 
+                 minPartitionCount: ${discountms.binder.kafka.partitioncount:2} 
+                 replicationFactor: ${discountms.binder.kafka.replicationfactor:2}  
+                           
+      default-binder: rabbit-binder
+        
+  rabbitmq:
+    host: ${discountms.rabbitmq.host:192.168.99.103}
+    port: ${discountms.rabbitmq.port:5672}
+
+      
+  application:
+    name: discountms
+  profiles:
+    active: ${discountms.profiles.active:local}    
+  config:
+    import: ${discountms.config.url:configserver:http://localhost:8888}
+    
+                
+eureka:
+  instance:
+    instanceId: ${spring.application.name}:${random.int}
+    leaseRenewalIntervalInSeconds: 2
+    leaseExpirationDurationInSeconds: 5
+    preferIpAddress: true
+    metadata-map:
+      zone: A
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    prefer-same-zone-eureka: true
+    serviceUrl:
+      defaultZone: ${discountms.eureka.url:http://localhost:8761/eureka}
+      
+server:
+  port: 0 
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    enable:
+      all: true
+  endpoint:
+    prometheus:
+      enabled: true
+    metrics:
+      enabled: true
