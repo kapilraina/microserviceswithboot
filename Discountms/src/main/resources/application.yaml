@@ -31,8 +31,8 @@ spring:
           webaudit-out:
            producer:
             bindQueue: ${discountms.binding.auditout.bindqueue:true}
-            #routingKeyExpression: ${discountms.binding.auditout.routingKeyExpression:rkwebauditshim1}
-            routingKeyExpression: 'rkwebauditshim1'
+            routingKeyExpression: ${discountms.binding.auditout.routingKeyExpression:'''rkwebauditshim1''''}
+            #routingKeyExpression: 'rkwebauditshim1'
             declareExchange: ${discountms.binding.auditout.declareExchange:true}
             exchangeType: direct
       kafka:
