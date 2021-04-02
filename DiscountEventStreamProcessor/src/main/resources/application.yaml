@@ -1,0 +1,56 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        simpleDiscountPipeline-in-0:
+          destination: ${discountstreamproc.binding.in.discpipe01.destination:TX-DISCOUNTSTREAM}
+          consumer:
+           use-native-decoding: false
+          group:  ${discountstreamproc.binding.in.discpipe01.group:simpleDiscountPipeline}  
+        winaggdisc-in-0:
+          destination:  ${discountstreamproc.binding.in.winaggdisc01.destination:TX-DISCOUNTSTREAM}
+          consumer:
+           use-native-decoding: false 
+        winaggdisc-out-0:
+          destination: ${discountstreamproc.binding.out.winaggdisc01.destination:TX-AGG-DISCOUNTSTREAM}
+          #producer:
+        windiscbyinstance-in-0:
+          destination: ${discountstreamproc.binding.in.windiscbyinstance01.destination:TX-DISCOUNTSTREAM}
+          consumer:
+           use-native-decoding: false  
+      function:
+        definition: windiscbyinstance;winaggdisc      
+      kafka:
+        binder:
+          brokers: kafka1:9094,kafka2:9095
+        streams:
+          binder:
+            functions:
+              winaggdisc:
+               applicationId: winaggdisc-app
+              windiscbyinstance:
+               applicationId: windiscbyinstance-app
+            configuration:
+              commit.interval.ms: 1000
+#              default:
+#                key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+#                value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+
+  application:
+    name: discountstreamproc
+  profiles:
+    active: ${discountstreamproc.profiles.active:local}    
+  config:
+    import: ${discountstreamproc.config.url:configserver:http://localhost:8888}
+    
+server:
+  port: 9991
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+#org.apache.kafka.streams.kstream.WindowedSerdes$TimeWindowedSerde
+#Developers can leverage the framework’s content-type conversion for inbound and outbound conversion or switch to the native SerDe’s provided by Kafka.
+                        
