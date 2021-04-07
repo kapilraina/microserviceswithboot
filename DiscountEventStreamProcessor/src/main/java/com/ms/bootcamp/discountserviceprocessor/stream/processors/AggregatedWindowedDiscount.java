@@ -8,18 +8,21 @@ public class AggregatedWindowedDiscount {
 	private double windowTotal;
 	private Date windowStart;
 	private Date windowEnd;
+	private long windowStartMills;
+	private long windowEndMills;
 
 	public AggregatedWindowedDiscount() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public AggregatedWindowedDiscount(String category, double windowTotal, Date windowStart, Date windowEnd) {
-		super();
+	public AggregatedWindowedDiscount(String category, double windowTotal, Date windowStart, Date windowEnd, long windowStartMills, long windowEndMills) {
 		this.category = category;
 		this.windowTotal = windowTotal;
 		this.windowStart = windowStart;
 		this.windowEnd = windowEnd;
+		this.windowStartMills = windowStartMills;
+		this.windowEndMills = windowEndMills;
 	}
 
 	public double getWindowTotal() {
@@ -54,10 +57,31 @@ public class AggregatedWindowedDiscount {
 		this.windowEnd = windowEnd;
 	}
 
-	@Override
-	public String toString() {
-		return "AggregatedWindowedDiscount [category=" + category + ", windowTotal=" + windowTotal + ", windowStart="
-				+ windowStart + ", windowEnd=" + windowEnd + "]";
+	public long getWindowStartMills() {
+		return windowStartMills;
 	}
 
+	public void setWindowStartMills(long windowStartMills) {
+		this.windowStartMills = windowStartMills;
+	}
+
+	public long getWindowEndMills() {
+		return windowEndMills;
+	}
+
+	public void setWindowEndMills(long windowEndMills) {
+		this.windowEndMills = windowEndMills;
+	}
+
+	@Override
+	public String toString() {
+		return "AggregatedWindowedDiscount{" +
+				"category='" + category + '\'' +
+				", windowTotal=" + windowTotal +
+				", windowStart=" + windowStart +
+				", windowEnd=" + windowEnd +
+				", windowStartMills=" + windowStartMills +
+				", windowEndMills=" + windowEndMills +
+				'}';
+	}
 }

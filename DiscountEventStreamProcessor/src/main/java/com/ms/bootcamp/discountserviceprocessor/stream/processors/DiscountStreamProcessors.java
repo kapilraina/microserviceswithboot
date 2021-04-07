@@ -53,7 +53,7 @@ public class DiscountStreamProcessors {
 
 			return kAggDiscountTable.toStream()
 					.map((k, v) -> KeyValue.pair(k.key(), new AggregatedWindowedDiscount(k.key(), v,
-							new Date(k.window().start()), new Date(k.window().end()))))
+							new Date(k.window().start()), new Date(k.window().end()),k.window().start(),k.window().end())))
 					.peek((k, v) -> dsps.pipeToWebAggSocket(v));
 
 		};
@@ -65,7 +65,7 @@ public class DiscountStreamProcessors {
 		return kstream -> {
 
 			kstream.peek((k, v) -> {
-				WindowedDiscountByInstance bbi = new WindowedDiscountByInstance();
+				DiscountByInstance bbi = new DiscountByInstance();
 
 				bbi.setCategory(k);
 				bbi.setDiscountApplied(v.getFixedCategoryDiscount() + v.getOnSpotDiscount());

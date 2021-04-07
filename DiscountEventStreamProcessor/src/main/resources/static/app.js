@@ -272,8 +272,11 @@ function sendMessage() {
 function onMessageReceived(payload) {
 	var messageContent = "";
 	var messageObj = JSON.parse(payload.body);
+	console.log("Windowed Payload \n"+ JSON.stringify(messageObj));
 	var windowStart = messageObj.windowStart;
 	var windowEnd = messageObj.windowEnd
+	var windowStartMills = messageObj.windowStart;
+    var windowEndMills = messageObj.windowEnd
 	var category = messageObj.category
 	var windowTotal = messageObj.windowTotal
 
@@ -344,8 +347,9 @@ function onMessageReceived(payload) {
 }
 
 function oniMessageReceived(payload) {
-	// console.log(JSON.stringify(payload));
+	console.log(JSON.stringify(payload));
 	var messageObj = JSON.parse(payload.body);
+	console.log("Instance Payload \n"+ JSON.stringify(messageObj));
 	var windowStart = messageObj.windowStart;
 	var windowEnd = messageObj.windowEnd
 	var category = messageObj.category

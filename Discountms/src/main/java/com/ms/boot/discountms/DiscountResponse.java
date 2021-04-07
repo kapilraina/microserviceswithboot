@@ -6,25 +6,51 @@ public class DiscountResponse {
 	private double drp;
 	private double fixedCategoryDiscount;
 	private double onSpotDiscount;
-	
+	private long timestamp;
 	
 	
 	public DiscountResponse() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
+	public DiscountResponse(com.ms.boot.discountms.ProductCategory category, double mrp, double drp, double fixedCategoryDiscount, double onSpotDiscount, long timestamp) {
+		this.category = category;
+		this.mrp = mrp;
+		this.drp = drp;
+		this.fixedCategoryDiscount = fixedCategoryDiscount;
+		this.onSpotDiscount = onSpotDiscount;
+		this.timestamp = timestamp;
+	}
+
+	public void setCategory(com.ms.boot.discountms.ProductCategory category) {
+		this.category = category;
+	}
+
 	@Override
 	public String toString() {
-		return "DiscountResponse [category=" + category + ", mrp=" + mrp + ", drp=" + drp + ", fixedCategoryDiscount="
-				+ fixedCategoryDiscount + ", onSpotDiscount=" + onSpotDiscount + "]";
+		return "DiscountResponse{" +
+				"category=" + category +
+				", mrp=" + mrp +
+				", drp=" + drp +
+				", fixedCategoryDiscount=" + fixedCategoryDiscount +
+				", onSpotDiscount=" + onSpotDiscount +
+				", timestamp=" + timestamp +
+				'}';
 	}
+
+	public long getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+	}
+
 	public ProductCategory getCategory() {
 		return category;
 	}
-	public void setCategory(ProductCategory category) {
-		this.category = category;
-	}
+
 	public double getMrp() {
 		return mrp;
 	}

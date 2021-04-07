@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -57,7 +58,7 @@ public class DiscountController {
 		double discountper = fixedCategoryDiscount + onSpotDiscount;
 		double drp = Math.ceil(request.getMrp() - ((discountper / 100) * request.getMrp()));
 		DiscountResponse response = new DiscountResponse(request.getCategory(), request.getMrp(), drp,
-				fixedCategoryDiscount, onSpotDiscount);
+				fixedCategoryDiscount, onSpotDiscount, System.currentTimeMillis());
 		pubAuditEvent(response);
 		pubAuditEventStream(response);
 		createAndLogMetrics(response);
