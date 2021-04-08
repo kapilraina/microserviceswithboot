@@ -3,7 +3,7 @@ spring:
     config:
       server:
         git:
-          uri: ${configserver.git.uri:C:\work\playground\VirtaulMarch2021ConfigRepo}
+          uri: ${configserver.git.uri:C:\work\playground\microserviceswithbootconfig}
           username: ${configserver.git.username}
           password: ${configserver.git.password}
     bus:
