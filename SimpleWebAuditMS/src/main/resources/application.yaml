@@ -38,7 +38,11 @@ spring:
 #    host: ${webauditms.bus.rabbitmq.host:rabbitmq-master}
 #    port: ${webauditms.bus.rabbitmq.port:5672}
 
-  cloud:    stream:      bindings:       webaudit-in:
+
+  cloud:
+    stream:
+      bindings:
+       webaudit-in:
         binder: rabbit-binder
         destination: ${webauditms.binding.auditout.destination:ex.webaudit}  #Exchange
         group: ${webauditms.binding.auditout.group:q.audit} # queue               
@@ -48,10 +52,11 @@ spring:
           webaudit-in:
            consumer:
             bindQueue: ${webauditms.binding.auditout.bindqueue:false}
-            declareExchange: false
+            declareExchange: true
             exchangeType: direct
             queueNameGroupOnly: true
-            routingKeyExpression: ${webauditms.binding.auditout.routingKeyExpression:'rkwebauditshim1'}  
+            routingKeyExpression: ${webauditms.binding.auditout.routingKeyExpression:'rkwebauditshim1'}  
+
       binders:      
         rabbit-binder:
          type: rabbit

@@ -14,11 +14,12 @@ spring:
     host: ${apigateway.rabbitmq.host:192.168.99.100} 
     port: ${apigateway.rabbitmq.port:5672}
 
-
   application:
     name: apigateway
   profiles:
-    active: ${apigateway.profiles.active:local}      config:    import: ${apigateway.config.url:configserver:http://localhost:8888}
+    active: ${apigateway.profiles.active:local}    
+  config:
+    import: ${apigateway.config.url:configserver:http://localhost:8888}
 
 
 
