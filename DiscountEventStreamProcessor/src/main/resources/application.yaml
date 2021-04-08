@@ -35,6 +35,9 @@ spring:
 #              default:
 #                key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
 #                value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+    bus:
+      enabled: true
+      destination: ${discountstreamproc.config.bus.exchange:busConfigExchange}
 
   application:
     name: discountstreamproc
@@ -42,7 +45,30 @@ spring:
     active: ${discountstreamproc.profiles.active:local}    
   config:
     import: ${discountstreamproc.config.url:configserver:http://localhost:8888}
-    
+
+  sleuth:
+    trace-id128: true
+    sampler:
+      probability: 1.0
+  zipkin:
+    enabled: true
+    base-url: ${discountstreamproc.zipkin.url:http://192.168.99.103:9411/}
+
+eureka:
+  instance:
+    instanceId: ${spring.application.name}:${random.int}
+    leaseRenewalIntervalInSeconds: 2
+    leaseExpirationDurationInSeconds: 5
+    preferIpAddress: true
+    metadata-map:
+      zone: A
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    prefer-same-zone-eureka: true
+    serviceUrl:
+      defaultZone: ${discountstreamproc.eureka.url:http://localhost:8761/eureka}
+
 server:
   port: 9991
 
