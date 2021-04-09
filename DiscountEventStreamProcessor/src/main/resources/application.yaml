@@ -3,7 +3,7 @@ spring:
     stream:
       bindings:
         simpleDiscountPipeline-in-0:
-          destination: ${discountstreamproc.binding.in.discpipe01.destination:TX-DISCOUNTSTREAM}
+          destination: ${discountstreamproc.binding.in.discpipe01.destination:TX-DISCOUNTSTREAM} #
           consumer:
            use-native-decoding: false
           group:  ${discountstreamproc.binding.in.discpipe01.group:simpleDiscountPipeline}  
