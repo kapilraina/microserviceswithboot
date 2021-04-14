@@ -18,7 +18,10 @@ spring:
   cloud:
     bus:
       enabled: true
-      destination: ${discountms.config.bus.exchange:busConfigExchange}   
+      destination: ${discountms.config.bus.exchange:busConfigExchange}
+    loadbalancer:
+      ribbon:
+        enabled: false
   h2:
     console:
       enabled: ${productms.console.enabled:true}
@@ -55,6 +58,8 @@ eureka:
     prefer-same-zone-eureka: true
     serviceUrl:
       defaultZone: ${productms.eureka.url:http://localhost:8761/eureka} 
-
+feign:
+  circuitbreaker:
+    enabled: true
 
 greetText: Fallback Hola From Local File          
